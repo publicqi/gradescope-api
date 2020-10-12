@@ -66,7 +66,6 @@ class GSConnection():
         account_resp = self.session.get("https://www.gradescope.com/account")
         parsed_account_resp = BeautifulSoup(account_resp.text, 'html.parser')
 
-        # Get instructor course data
         courses = parsed_account_resp.find('h1', class_ ='pageHeading').next_sibling
         
         for course in courses.find_all('a', class_ = 'courseBox'):
@@ -81,4 +80,4 @@ class GSConnection():
                     break
             if year is None:
                 return False # Should probably raise an exception.
-            self.account.add_class(cid, name, shortname, year, instructor = True)
+            self.account.add_class(cid, name, shortname, year, instructor = False)
