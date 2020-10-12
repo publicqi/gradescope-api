@@ -67,9 +67,9 @@ class GSConnection():
         parsed_account_resp = BeautifulSoup(account_resp.text, 'html.parser')
 
         # Get instructor course data
-        instructor_courses = parsed_account_resp.find('h1', class_ ='pageHeading').next_sibling
+        courses = parsed_account_resp.find('h1', class_ ='pageHeading').next_sibling
         
-        for course in instructor_courses.find_all('a', class_ = 'courseBox'):
+        for course in courses.find_all('a', class_ = 'courseBox'):
             shortname = course.find('h3', class_ = 'courseBox--shortname').text
             name = course.find('h4', class_ = 'courseBox--name').text
             cid = course.get("href").split("/")[-1]
@@ -82,17 +82,3 @@ class GSConnection():
             if year is None:
                 return False # Should probably raise an exception.
             self.account.add_class(cid, name, shortname, year, instructor = True)
-
-        student_courses = parsed_account_resp.find('h1', class_ ='pageHeading', string = "Student Courses").next_sibling
-        for course in student_courses.find_all('a', class_ = 'courseBox'):
-            shortname = course.find('h3', class_ = 'courseBox--shortname').text
-            name = course.find('h4', class_ = 'courseBox--name').text
-            cid = course.get("href").split("/")[-1]
-            
-            for tag in course.parent.previous_siblings:
-                if tag.get("class") == "courseList--term pageSubheading":
-                    year = tag.body
-                    break
-            if year is None:
-                return False # Should probably raise an exception.
-            self.account.add_class(cid, name, shortname, year)
