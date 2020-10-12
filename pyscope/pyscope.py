@@ -96,10 +96,3 @@ class GSConnection():
             if year is None:
                 return False # Should probably raise an exception.
             self.account.add_class(cid, name, shortname, year)
-
-# THIS IS STRICTLY FOR DEVELOPMENT TESTING :( Sorry for leaving it in.
-if __name__=="__main__":
-    conn = GSConnection()
-    conn.login("email", "password")
-    print(conn.state)
-    conn.get_account()
